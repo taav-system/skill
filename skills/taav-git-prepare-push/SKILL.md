@@ -43,7 +43,7 @@ Before database tests or migrations, verify the effective connection resolves to
 
 Run `flutter analyze`, complete `flutter test`, and the documented application build. When a runnable `example` has web as a supported target, build from it using `flutter build web --release`; do not invent an application target for a reusable package. Use the documented Flutter SDK and inspect any files tooling changes.
 
-For source repairs affecting behavior, manually verify the affected flow through the available browser/emulator/computer-use UI in an isolated local environment in addition to automated tests. Use repository/project login and runtime instructions. If unavailable, report that check as blocked, not passed. Do not publish just to obtain a test runtime.
+For source repairs affecting behavior, manually exercise the complete affected workflow through the actual UI in an isolated local environment, in addition to automated tests. For web workflows, use the internal browser through the computer-use UI, open the local app in a visible tab, and keep it visible so the user can follow the test. Start at the real entry point and perform each required interaction through the final expected outcome; automated tests, API calls, screenshots, and developer tools do not substitute for this UI run. Use repository/project login and runtime instructions. For native mobile workflows, use the emulator/UI. If the relevant UI is unavailable, report the manual UI check as blocked, not passed; an API/runtime check is supplemental only. Do not publish just to obtain a test runtime.
 
 ## Commit before pull
 
