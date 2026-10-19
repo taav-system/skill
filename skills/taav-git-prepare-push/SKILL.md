@@ -43,7 +43,7 @@ Before database tests or migrations, verify the effective connection resolves to
 
 Run `flutter analyze`, complete `flutter test`, and the documented application build. When a runnable `example` has web as a supported target, build from it using `flutter build web --release`; do not invent an application target for a reusable package. Use the documented Flutter SDK and inspect any files tooling changes.
 
-For source repairs affecting behavior, manually exercise the complete affected workflow through the actual UI in an isolated local environment, in addition to automated tests. For web workflows, use the internal browser through the computer-use UI, open the local app in a visible tab, and keep it visible so the user can follow the test. Start at the real entry point and perform each required interaction through the final expected outcome; automated tests, API calls, screenshots, and developer tools do not substitute for this UI run. Use repository/project login and runtime instructions. For native mobile workflows, use the emulator/UI. If the relevant UI is unavailable, report the manual UI check as blocked, not passed; an API/runtime check is supplemental only. Do not publish just to obtain a test runtime.
+Do not launch the application or perform manual UI/browser/emulator testing as part of this standalone Git preparation workflow. Validate the frontend with `flutter analyze`, the complete `flutter test` suite, and its documented application build. If another explicitly approved workflow requires manual UI testing, follow that workflow's instructions; this skill alone does not require it.
 
 ## Commit before pull
 
@@ -65,7 +65,7 @@ If an earlier repository was committed before a later failure, report actual par
 
 ## Final local report; never push
 
-When preparation is complete, present in Persian the repositories, remote/branch destinations, final HEAD hashes, outgoing commit summaries, integration/conflict repairs, exact check outcomes, warning/lint counts, manual checks, and working-tree/divergence status. State explicitly that no repository has been pushed and this skill will never push. Do not ask for push approval.
+When preparation is complete, present in Persian the repositories, remote/branch destinations, final HEAD hashes, outgoing commit summaries, integration/conflict repairs, exact build/analyzer/test outcomes, warning/lint counts, and working-tree/divergence status. State explicitly that no repository has been pushed and this skill will never push. Do not ask for push approval.
 
 If asked to push, refuse that operation and leave the validated commits local. Do not use another tool or route to make the equivalent remote update. The user may perform the push manually outside this skill.
 
