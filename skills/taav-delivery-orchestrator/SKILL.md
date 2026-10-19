@@ -1,20 +1,20 @@
 ---
 name: taav-delivery-orchestrator
-description: Coordinate company .NET and Flutter feature or bug delivery through an explicitly approved plan, development and testing, then local Git preparation, with separate approval before push. Use for the complete managed delivery workflow.
+description: Coordinate company .NET and Flutter feature or bug delivery through an explicitly approved plan, development and testing, then local Git preparation. Supports local commits, pull, merge, and conflict repair; never pushes.
 metadata:
   short-description: Plan, obtain approval, develop, test, and prepare Git delivery
 ---
 
 # TAAV delivery orchestration
 
-Manage company .NET and Flutter work in this order: read-only investigation, user-approved plan, development and verification, Git preparation, then separate push approval. Write user-facing plans, progress, questions, and reports in Persian. Keep the user's requested scope throughout the workflow.
+Manage company .NET and Flutter work in this order: read-only investigation, user-approved plan, development and verification, then local Git preparation. Write user-facing plans, progress, questions, and reports in Persian. Keep the user's requested scope throughout the workflow. Local commits, fetch/pull, merge, and conflict repair may be performed within the approved Git scope. This skill must never push to any remote, under any circumstances, even if the user requests or approves a push; the user may push manually outside this workflow.
 
 ## Required skills
 
 Before presenting the plan, locate and read both complete skill files:
 
 - [taav-dotnet-flutter-dev](../taav-dotnet-flutter-dev/SKILL.md): implementation, architecture maps, automated and manual testing, company UI rules, and project-specific rules including First Unit.
-- [taav-git-prepare-push](../taav-git-prepare-push/SKILL.md): repair and validation, local commits, pull/merge, conflict resolution, final revalidation, and push approval.
+- [taav-git-prepare-push](../taav-git-prepare-push/SKILL.md): repair and validation, local commits, pull/merge, conflict resolution, and final revalidation without pushing.
 
 Use the installed skills directory to resolve these names if relative paths are unavailable. Do not substitute remembered summaries or obsolete skill names. If either required skill is missing or unreadable, report which dependency is missing and stop the managed workflow. Follow both skills throughout repairs, including repairs made during Git preparation; entering the Git stage does not suspend development, architecture, UI, or testing rules.
 
@@ -51,14 +51,14 @@ The overall plan must also include:
 - Affected projects, repositories, main layers/files, and relevant architecture/company UI constraints.
 - Proposed implementation and any architecture-document updates or migration/runtime setup.
 - Regression and other automated tests, manual end-to-end flows, and conditions for success.
-- Git scope: intended repositories, dev branches and known destinations, local commit, pull/merge and conflict repair, complete revalidation, and a separate approval before push.
+- Git scope: intended repositories, dev branches and remotes, local commits, pull/merge and conflict repair, and complete revalidation. State explicitly that this skill will not push.
 - Any material business decision or environment dependency needed to proceed.
 
 Ask explicitly for approval of the presented plan and wait. A broad request to fix, an itemized request, invocation of this skill, presenting a plan, silence, or elapsed time is not approval. The approval must clearly cover the plan or named subset. Do not begin coding, architecture-map creation, tests/builds, setup, service operation, or data mutation until approval is unambiguous. Once approved, execute the approved scope without asking the user to reconfirm each item, routine technical choice, test, or workflow step already included in the plan. Choose ordinary implementation details using repository conventions and engineering judgment, then report them. Ask again only when a real blocker needs the user's input or new evidence would materially change approved behavior, scope, repository/destination, or another consequential decision. Answer user questions or revise the plan while waiting; if the user is unsure, clarify or revise rather than treating uncertainty as approval. When the user requests plan changes, present the revised plan and obtain approval for it. Do not fabricate a need for a particular UI planning mode; a clear plan in chat is sufficient.
 
 ## Phase 2: implement and verify the approved plan
 
-After explicit approval, carry out the plan under taav-dotnet-flutter-dev. Approval of the plan including its Git scope authorizes that scoped local Git preparation later; do not ask again just to stage, commit, pull, or resolve ordinary conflicts. It does not authorize push.
+After explicit approval, carry out the plan under taav-dotnet-flutter-dev. Approval of the plan including its Git scope authorizes that scoped local Git preparation later; do not ask again just to stage, commit, pull, or resolve ordinary conflicts. No approval can authorize this skill to push: never run a Git push or equivalent remote-write operation.
 
 Create missing architecture maps now, implement the feature/fix, write appropriate regression tests, perform required automated checks, and exercise the relevant manual flows. Use the correct project-specific runtime/login/database rules from the development skill. Preserve unrelated user work. Record actual check commands, outcomes, and tested source state.
 
@@ -74,13 +74,13 @@ Execute taav-git-prepare-push in the approved repositories. This orchestrator's 
 
 Complete validation and necessary in-scope repairs, create initial local commits, pull the intended remote dev branches using merge semantics, resolve conflicts preserving both intended behaviors, and revalidate the final integrated source. Apply development rules to every repair. Create further commits when needed; do not invent commits for a no-op pull. Refresh any manual verification whose relevant behavior changed during integration.
 
-Do not stop after the first local commit, after pulling, or at a routinely repairable test failure. Complete all preparation required by the Git skill before requesting push approval. A genuine blocker or materially changed plan follows the preceding phase's escalation rules. Report actual partial commits/merge status if preparation is blocked; never discard work or claim nothing was committed when commits exist.
+Do not stop after the first local commit, after pulling, or at a routinely repairable test failure. Complete all approved preparation and validation before the final local-result report. A genuine blocker or materially changed plan follows the preceding phase's escalation rules. Report actual partial commits/merge status if preparation is blocked; never discard work or claim nothing was committed when commits exist.
 
-## Phase 4: request approval of the prepared push
+## Phase 4: report locally prepared result; never push
 
-Once all requested repositories are ready, present the completed result, final HEAD hashes, remote/branch destinations, outgoing commits, integration repairs, automated/manual check outcomes and limitations, and working-tree/divergence status. Explicitly state that nothing has been pushed. Ask for approval to push this concrete prepared result and wait.
+Once all requested repositories are ready, present the completed result, final HEAD hashes, remote/branch destinations, outgoing commits, integration repairs, automated/manual check outcomes and limitations, and working-tree/divergence status. Explicitly state that no push was attempted and that the skill will not push. Do not ask for push approval.
 
-Plan approval never doubles as push approval. Only after the user approves this prepared result, perform the Git skill's final HEAD/status/remote checks and normal push. If those checks reveal material source/destination changes, prepare and validate the new result and obtain renewed push approval as required by the Git skill. Never force-push or treat approval for one destination/result as approval for another. Verify and report actual post-push synchronization or any partial failure.
+If the user asks to push, explain that pushing is prohibited by this skill and leave the prepared commits local for the user to push manually if they choose. Do not invoke GitHub APIs, scripts, GUIs, or other tools to perform an equivalent remote write.
 
 ## Continuing across messages
 

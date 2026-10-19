@@ -6,9 +6,11 @@ Private, version-controlled catalog of TAAV engineering workflows for coding age
 
 - **taav-delivery-orchestrator** — coordinates read-only investigation, an itemized user-approved plan, implementation and verification, and Git preparation. It depends on the two skills below.
 - **taav-dotnet-flutter-dev** — implementation and verification rules for company .NET and Flutter projects.
-- **taav-git-prepare-push** — local Git preparation, integration, validation, and separate approval before push.
+- **taav-git-prepare-push** — local commits, pull/merge, conflict resolution, and validation. It never pushes.
 
 Each skill is self-contained in its own directory. Keep the three directories together when installing the orchestrator, because it links to its sibling skills using relative paths.
+
+The workflows may create local commits, pull changes, merge, and resolve conflicts within the approved scope. They must never push to a remote; users perform any desired push manually outside these skills.
 
 ## Layout
 
