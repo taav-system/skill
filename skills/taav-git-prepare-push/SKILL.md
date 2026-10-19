@@ -1,19 +1,19 @@
 ---
 name: taav-git-prepare-push
-description: Prepare TAAV .NET and Flutter changes by repairing and validating them, creating local commits, integrating remote changes, and revalidating the result. This workflow never pushes.
+description: Prepare TAAV .NET and Flutter changes through repair, validation, local commits, and remote integration. Push only when the user explicitly requests it.
 metadata:
-  short-description: Validate and integrate changes locally; never push
+  short-description: Validate and integrate; push on explicit request
 ---
 
-# TAAV Git Preparation (Local Only)
+# TAAV Git Preparation
 
-Never push to a remote. Do not run `git push` (including force pushes or tag pushes), use a GitHub API, or use a script or GUI to update a remote reference. A user request or approval does not override this restriction. Leave commits local; the user may push them outside this skill. Local commits, fetch/pull, merges, and conflict resolution are allowed only within the approved scope.
+Push only when the user explicitly asks for a push. Plan approval, skill invocation, successful validation, or an implied expectation to deliver does not authorize a remote update. When the user explicitly requests a push, complete all required validation and integration, verify the intended remote and branch, then push the validated branch using the configured upstream. Never force-push or push tags unless the user explicitly requests that specific operation. Do not use an API, script, or GUI to bypass these rules. If the target is ambiguous or the branch is not ready, clarify or report the blocker instead of pushing.
 
-Use this skill only when explicitly invoked as `$taav-git-prepare-push` or when the user directly requests this Git preparation workflow. Invocation starts the workflow but does not authorize behavior-changing code edits. For orchestrated work, follow the approved plan and its scope. For standalone work, perform read-only discovery first and obtain explicit approval of a concrete plan before editing code, running tests/builds, or setting up local test infrastructure. Stage, commit, fetch, pull, merge, or resolve conflicts only when the approved task scope authorizes those actions. Complete the approved preparation and validation, then report the local result. Never ask for approval to push.
+Use this skill only when explicitly invoked as `$taav-git-prepare-push` or when the user directly requests this Git preparation workflow. Invocation starts the workflow but does not authorize behavior-changing code edits. For orchestrated work, follow the approved plan and its scope. For standalone work, perform read-only discovery first and obtain explicit approval of a concrete plan before editing code, running tests/builds, or setting up local test infrastructure. Stage, commit, fetch, pull, merge, or resolve conflicts only when the approved task scope authorizes those actions. An explicit user request to push authorizes that remote update; do not ask for redundant push approval. Complete the approved preparation and validation before reporting the result.
 
 Read applicable repository instructions and architecture documents before making changes. Follow the company's .NET/Flutter architecture and Taav Material UI conventions. Inspect existing company components before adding UI; ask before creating a missing component. Update repository architecture maps when a repair changes architecture.
 
-When this skill runs as the Git phase of `taav-delivery-orchestrator`, the approved plan authorizes only its stated implementation and Git-preparation scope. Do not expand product behavior or fix unrelated work through the repair loop. If a repair would change behavior, broaden scope, or require a business decision, pause and obtain approval of a revised item-level proposal. Routine mechanical repairs needed to validate approved changes may proceed within scope. No plan or user approval authorizes a push.
+When this skill runs as the Git phase of `taav-delivery-orchestrator`, the approved plan authorizes only its stated implementation and Git-preparation scope. Do not expand product behavior or fix unrelated work through the repair loop. If a repair would change behavior, broaden scope, or require a business decision, pause and obtain approval of a revised item-level proposal. Routine mechanical repairs needed to validate approved changes may proceed within scope. Plan approval alone does not authorize a push; an explicit user request is required.
 
 ## Discover scope and branch
 
@@ -49,7 +49,7 @@ When this skill is used on its own, do not launch the application or perform man
 
 Complete required validation in every requested repository before creating initial commits. Recheck status, stage the reviewed task scope, inspect the staged diff, and commit locally in each repository that needs a commit. Use one coherent initial commit per repository unless the changes clearly call for separate commits.
 
-Write commit subjects and bodies entirely in English and follow Conventional Commits. Describe the actual changes; never claim that unrun tests passed. Do not append or request a ticket/sequence number unless the user explicitly asks for one. Do not automatically amend, rebase, cherry-pick, tag, force-push, or reset history. Never run a push operation.
+Write commit subjects and bodies entirely in English and follow Conventional Commits. Describe the actual changes; never claim that unrun tests passed. Do not append or request a ticket/sequence number unless the user explicitly asks for one. Do not automatically amend, rebase, cherry-pick, tag, force-push, or reset history. A normal push to the verified upstream is allowed only when the user explicitly requests it and all required checks pass.
 
 ## Pull, resolve conflicts, and validate again
 
@@ -57,16 +57,16 @@ After the initial local commits, fetch the intended remote for each requested re
 
 Resolve conflicts by reviewing both sides, surrounding implementation, tests, and the intent of incoming commits. Preserve the intended local changes and incoming behavior together. Never choose ours/theirs blindly for all conflicts. Repair downstream build/test regressions and check relevant tracked source for conflict markers. If intent remains ambiguous, preserve the merge state and ask the user; do not abort or reset automatically.
 
-If Git requires a merge commit before checks can run, complete it locally. Otherwise, validate the resolved tree before completing the merge. After integration, rerun the full required validation for every requested repository against the final combined source; pre-pull results are stale. Fix failures and create additional local commits for repairs. A clean fast-forward or no-op pull does not need an artificial commit. Use an English Conventional Commit message for merge commits when possible. Never push the result.
+If Git requires a merge commit before checks can run, complete it locally. Otherwise, validate the resolved tree before completing the merge. After integration, rerun the full required validation for every requested repository against the final combined source; pre-pull results are stale. Fix failures and create additional local commits for repairs. A clean fast-forward or no-op pull does not need an artificial commit. Use an English Conventional Commit message for merge commits when possible. If the user explicitly requested a push, push only after final validation and only to the verified upstream; otherwise leave the commits local.
 
 Any change to tested source invalidates the affected earlier results. Revalidate until the final `HEAD` is the checked source, the reviewed task work is committed, no merge conflict remains unresolved, and no required check is failing, skipped, blocked, or unrun. Follow repository requirements for validating a clean worktree. Fetch again before declaring readiness; if remote `dev` has advanced, integrate and validate again. A blocker in any requested repository prevents declaring the multi-repository operation ready.
 
 If one repository was committed before a later failure, report the actual partial results and commit hashes. Never claim that nothing was staged or committed when it was. Do not automatically roll back successful local commits.
 
-## Final local report; never push
+## Final report
 
-When preparation is complete, report in Persian: repositories; remote/branch destinations; final `HEAD` hashes; outgoing commit summaries; integration and conflict repairs; exact build, analyzer, and test results; warning/lint counts; and worktree/divergence status. State explicitly that no repository was pushed and this skill will never push. Do not ask for push approval.
+When preparation is complete, report in Persian: repositories; remote/branch destinations; final `HEAD` hashes; outgoing commit summaries; integration and conflict repairs; exact build, analyzer, and test results; warning/lint counts; worktree/divergence status; and whether each requested push succeeded or was blocked.
 
-If asked to push, explain that the operation is prohibited and leave the validated commits local. Do not use another tool or route to make an equivalent remote update. The user may push manually outside this skill.
+If the user explicitly asked for a push and all readiness conditions are met, push the validated branch to its verified upstream. If any condition prevents the push, explain the exact blocker and leave the commits local. Never use another tool or route to bypass the verified destination or normal Git safeguards.
 
 Write all user-facing progress updates and final reports in Persian. Preserve command names, paths, hashes, and English commit messages as needed. Never expose secrets.
